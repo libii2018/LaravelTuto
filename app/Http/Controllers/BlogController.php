@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogFilterRequest;
+use App\Http\Requests\CreatePostRequest;
 use App\Models\Post;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\View;
@@ -16,6 +17,16 @@ class BlogController extends Controller
         return view('blog.index',[
             'posts'=> Post::paginate(1)
         ]);
+    }
+
+    public function create() {
+        return view('blog.create');
+    }
+
+    public  function store(CreatePostRequest $request) {
+        $post = Post::create($request->validated());
+
+        return redirect()->route('blog.show',['slug' => $post->slug, 'post' => $post->id])->with('success',"L'article a bien ete sauvegarde");
     }
 
     public function show(string $slug, Post $post) : RedirectResponse | View { 
