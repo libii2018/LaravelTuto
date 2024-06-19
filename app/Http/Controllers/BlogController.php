@@ -2,21 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BlogFilterRequest;
-use App\Http\Requests\FormPostRequest;
-use App\Models\Category;
-use App\Models\Post;
+use index;
 use App\Models\Tag;
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\FormPostRequest;
+use App\Http\Requests\BlogFilterRequest;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Pagination\Paginator;
 
 class BlogController extends Controller
 {
     public function index(): View {
-
+        // User::create([
+        //     'name' => 'John',
+        //     'email' =>'john@doe.fr',
+        //     'password' => Hash::make('000')
+        // ]);
         return view('blog.index',[
             'posts'=> Post::with('tags','category')->paginate(10)
         ]);

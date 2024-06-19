@@ -18,12 +18,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/login',[\App\Http\Controllers\AuthController::class, 'login'])->name('auth.login');
+Route::delete('/logout',[\App\Http\Controllers\AuthController::class, 'logout'])->name('auth.logout');
+Route::post('/login',[\App\Http\Controllers\AuthController::class, 'doLogin']);
+
 Route::prefix('/blog')->name('blog.')->controller(BlogController::class)->group(function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/new','create')->name('create');
-    Route::post('/new','store');
-    Route::get('/{post}/edit','edit')->name('edit');
-    Route::patch('/{post}/edit','update');
+    Route::get('/new','create')->name('create')->middleware('auth');
+    Route::post('/new','store')->middleware('auth');
+    Route::get('/{post}/edit','edit')->name('edit')->middleware('auth');
+    Route::patch('/{post}/edit','update')->middleware('auth');
     Route::get('/{slug}-{post}', 'show')->where([
         'id' => '[0-9]+',
         'slug'=> '[a-z0-9\-]+'

@@ -18,17 +18,32 @@
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                <a @class(['nav-link', 'active' => str_starts_with($routeName, 'blog.')]) aria-current="page" href="{{ route('blog.index') }}">Accueil</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-                </li>
-            </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                    <a @class(['nav-link', 'active' => str_starts_with($routeName, 'blog.')]) aria-current="page" href="{{ route('blog.index') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                </ul>
+                <div class="navbar-nav ms-auto mb-2 mb-lq-0">
+                    @auth
+                        {{ \Illuminate\Support\Facades\Auth::user()->name }}
+                        <form class="nav-item" action="{{ route('auth.logout') }}" method="post">
+                            @method('delete')
+                            @csrf
+                            <button class="nav-link">Se deconnecter</button>
+                        </form>
+                    @endauth
+                    @guest
+                        <div class="anv-item">
+                            <a class="nav-link" href="{{ route('auth.login') }}">Se connecter</a>
+                        </div>
+                    @endguest
+                </div>
             </div>
         </div>
     </nav>
